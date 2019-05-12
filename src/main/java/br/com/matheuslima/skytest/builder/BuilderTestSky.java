@@ -17,22 +17,24 @@ public class BuilderTestSky {
 	
 	public static ChromeDriver driver;
 	
-	public void run() {
+	public static void run() throws InterruptedException {
 		abrirArquivo();
-		
 	}
 	
-	public void abrirArquivo() {
+	public static void abrirArquivo() throws InterruptedException {
 		File dir = new File("C:\\");
 		File arq = new File(dir, "testar.txt");
 		
+		FileReader fileReader;
+		BufferedReader bufferedReader;
+		
 		try {
-			FileReader fileReader = new FileReader(arq);
-			BufferedReader bufferedReader = new BufferedReader(fileReader);
+			fileReader = new FileReader(arq);
+			bufferedReader = new BufferedReader(fileReader);
 			
 			List<String> result = new ArrayList<String>();
 			
-			while(bufferedReader.readLine() != null || !bufferedReader.readLine().isEmpty()){
+			while(bufferedReader.readLine() != null && !bufferedReader.readLine().isEmpty() && bufferedReader.readLine().contains(":") ){
 				String [] linha = null;
 				try {
 					linha = bufferedReader.readLine().split(":");
@@ -41,11 +43,11 @@ public class BuilderTestSky {
 				}
 				
 				if(linha.length == 2 && linha != null) {
-					result.add(bufferedReader.readLine());
+					result.add(linha[0] + ":" + linha[1]);
 				}
 			}
 			
-			List<List<String>> partitions = Lists.partition(result, result.size() / 1000);
+			List<List<String>> partitions = Lists.partition(result, 300);
 			
 			
 			if(!partitions.isEmpty()) {

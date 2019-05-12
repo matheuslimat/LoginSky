@@ -13,13 +13,11 @@ public class JobProcessamentoTestSky {
 	public static ChromeDriver driver;
 	public List<String> linhas;
 	
-	
 	public JobProcessamentoTestSky(List<String> linhas) {
 		this.linhas = linhas;
 	}
 
-
-	public void run() {
+	public void run() throws InterruptedException {
 		System.setProperty("webdriver.chrome.driver", "C:/chromedriver.exe");
 		driver = new ChromeDriver();
 		driver.get(ConstantesTestSky.URL_SKY_LOGIN);
@@ -31,18 +29,24 @@ public class JobProcessamentoTestSky {
 		
 	}
 	
-	public void preencheCampos(String login, String senha) {
+	public void preencheCampos(String login, String senha) throws InterruptedException {
 		
-		WebElement loginElemento = driver.findElement(By.id("login"));
-		loginElemento.sendKeys(login);
+		try {
+			WebElement loginElemento = driver.findElement(By.id("login"));
+			loginElemento.sendKeys(login);
 
-		WebElement senhaElemento = driver.findElement(By.id("senha"));
-		senhaElemento.sendKeys(senha);
-		
-		WebElement btnLogin = driver.findElement(By.id("btnSubmit"));
-		btnLogin.click();
-		
-		validaLogin(login, senha);
+			WebElement senhaElemento = driver.findElement(By.id("senha"));
+			senhaElemento.sendKeys(senha);
+			
+			WebElement btnLogin = driver.findElement(By.xpath("/html/body/div[1]/div/div[3]/form/div[2]/section/button"));
+			btnLogin.click();
+			
+			Thread.sleep(2500);
+		}catch(IllegalArgumentException e) {
+			System.out.println(login + "|" + senha);
+		}
+
+//		validaLogin(login, senha);
 	}
 	
 	public void validaLogin(String login, String senha) {
@@ -59,5 +63,4 @@ public class JobProcessamentoTestSky {
 
 		}
 	}
-
 }
